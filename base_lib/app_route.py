@@ -149,11 +149,11 @@ class RequestHandler(tornado.web.RequestHandler):
         return
 
     # 统一错误输出
-    def ret_error(self, error_info, msg=ERROR_MSG):
+    def ret_error(self, error_info="", msg=ERROR_MSG, error_code=1111):
 
         # 适配qf返回
         data = {
-            "respcd": str(ERROR_CODE.get(error_info, 1111)),
+            "respcd": str(ERROR_CODE.get(error_info, error_code)),
             "resperr": msg
         }
 
