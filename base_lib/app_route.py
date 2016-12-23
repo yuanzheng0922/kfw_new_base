@@ -140,6 +140,8 @@ class RequestHandler(tornado.web.RequestHandler):
         if data["error_code"] == 0:
             data["respcd"] = "0000"
 
+        data.pop("error_code")
+
         if max_age and not self.session:
             self.set_header("Cache-Control", "public max-age=%s" % max_age)
 
