@@ -10,7 +10,7 @@ from tornado.options import define, options
 import logging
 from base_lib.app_route import Application, RequestHandler, URL_PREFIX
 
-logger = logger.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 socket.setdefaulttimeout(10)
