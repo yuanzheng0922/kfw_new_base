@@ -147,6 +147,7 @@ class RequestHandler(tornado.web.RequestHandler):
         if max_age and not self.session:
             self.set_header("Cache-Control", "public max-age=%s" % max_age)
 
+        logger.info(data)
         self.write(json.dumps(data, default=format_date))
         if not self._finished:
             self.finish()
@@ -161,6 +162,7 @@ class RequestHandler(tornado.web.RequestHandler):
             "resperr": msg
         }
 
+        logger.info(data)
         self.write(json.dumps(data))
 
         if not self._finished:
