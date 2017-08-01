@@ -2,7 +2,9 @@
 import os, sys, time, datetime
 import types, random
 import threading
-import logging as log
+import logging
+
+log = logging.getLogger(__name__)
 
 debug = True
 dbpool = {}

@@ -6,6 +6,8 @@ from error_code import ERROR_CODE, ERROR_MSG
 from tools.session import Session
 from datetime import datetime, date
 
+logger = logging.getLogger(__name__)
+
 URL_PREFIX = "/api"
 
 
@@ -37,7 +39,7 @@ class Application(tornado.web.Application):
             if is_handler(cls) and has_pattern(cls):
                 handlers.append((cls.url_pattern, cls))
                 handlers.append((cls.url_pattern + "/.*", cls))
-                logging.info("Load url_pattern: %s" % cls.url_pattern)
+                logger.info("Load url_pattern: %s" % cls.url_pattern)
         self.add_handlers(perfix, handlers)
 
     def _get_host_handlers(self, request):
@@ -119,9 +121,9 @@ class RequestHandler(tornado.web.RequestHandler):
             if self.settings.get("debug", False) and len(tmp_errot_info.args) > 1:
                 errot_info[0] += ":" + tmp_errot_info.args[1]
         except Exception, e:
-            logging.error("Return error error, info:%s" % e)
+            logger.error("Return error error, info:%s" % e)
 
-        logging.error("status:%s error_info:%s" % (status_code, kwargs))
+        logger.error("status:%s error_info:%s" % (status_code, kwargs))
         return self.ret_error(errot_info[1], errot_info[0])
 
     # 返回json的统一处理,格式统一
@@ -130,7 +132,7 @@ class RequestHandler(tornado.web.RequestHandler):
             try:
                 data = json.loads(data)
             except Exception, e:
-                logging.error("Load json error: %s" % e)
+                logger.error("Load json error: %s" % e)
                 return self.ret_error("CONTENT_ERROR", "服务器开小差了，攻城狮正在火速解决~")
 
         if not data.get("error_code", 0):
@@ -203,7 +205,7 @@ def check_session(permission="login"):
             if not self.session or not self.session.get("user_id"):
                 self.ret_error("VERIFY_FAILED", "需要登录后才可以操作哦")
             else:
-                logging.info("User session checked by user_id: %s" % self.session.get("user_id", ""))
+                logger.info("User session checked by user_id: %s" % self.session.get("user_id", ""))
                 return func(self, *args, **argitems)
 
         return _

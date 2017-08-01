@@ -10,6 +10,9 @@ from tornado.options import define, options
 import logging
 from base_lib.app_route import Application, RequestHandler, URL_PREFIX
 
+logger = logger.getLogger(__name__)
+
+
 socket.setdefaulttimeout(10)
 default_encoding = 'utf-8'
 if sys.getdefaultencoding() != default_encoding:
@@ -43,7 +46,7 @@ def current_path():
 
 # 加载所有handler模块
 def load_module(app, path):
-    logging.info("Load module path:%s" % path)
+    logger.info("Load module path:%s" % path)
     all_py = scan_dir(path)
     # 循环获取所有py文件
     for file_name in all_py:
@@ -56,10 +59,10 @@ def load_module(app, path):
         hd = [j for j in dir(m) if j[-7:] == "Handler" and j != 'RequestHandler' and j != 'Handler']
         if hd:
             if ((LOAD_MODULE and i in LOAD_MODULE) or not LOAD_MODULE) and i not in REJECT_MODULE:
-                logging.info("Load handler file: %s" % file_name)
+                logger.info("Load handler file: %s" % file_name)
                 app.load_handler_module(m)
             else:
-                logging.info("Miss handler file: %s" % file_name)
+                logger.info("Miss handler file: %s" % file_name)
     return app
 
 
@@ -130,7 +133,7 @@ def run(path="", port=8800, url_prefix=URL_PREFIX, use_session=True):
 
     application.use_session = use_session
     http_server.listen(options.port)
-    logging.info('Server start , port: %s' % options.port)
+    logger.info('Server start , port: %s' % options.port)
     tornado.ioloop.IOLoop.instance().start()
 
 
