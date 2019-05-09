@@ -123,7 +123,7 @@ class RequestHandler(tornado.web.RequestHandler):
         except Exception, e:
             logger.error("Return error error, info:%s" % e)
 
-        logger.error("status:%s error_info:%s" % (status_code, kwargs))
+        logger.info("status:%s error_info:%s" % (status_code, kwargs))
         return self.ret_error(errot_info[1], errot_info[0])
 
     # 返回json的统一处理,格式统一
